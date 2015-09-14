@@ -1,6 +1,16 @@
 """
+    wiki-fetcher.py
+
+    Script to download MediaWiki pages and all embedded
+    documents, like images, PDFs, etc.
+
     (c) 2015 by Manuel Peuster
     manuel (dot) peuster (at) upb (dot) de
+"""
+"""
+    TODO:
+        * add recursive mode "-r": Download all content linked
+          from a given page (maybe with max_depth parameter)
 """
 
 import argparse
@@ -84,12 +94,18 @@ def setup_cli_parser():
     """
     parser = argparse.ArgumentParser(
         description="Download MediaWiki pages/ categories and all linked content.")
-    parser.add_argument("--host", dest="host", default="wiki.sonata-nfv.eu", help="Host of Wiki to fetch from.")
-    parser.add_argument("--user", dest="user", default=None, help="Username for Wiki")
-    parser.add_argument("--pass", dest="password", default=None, help="Password for Wiki")
-    parser.add_argument("-c", dest="category", action='store_true', help="Fetch entire category instead of single page.")
-    parser.add_argument("--out", dest="output", default=None, help="Output directory (default is name of category)")
-    parser.add_argument('target', help='Page name or category name to fetch')
+    parser.add_argument("--host", dest="host", default="wiki.sonata-nfv.eu",
+                        help="Host of Wiki to fetch from")
+    parser.add_argument("--user", dest="user", default=None,
+                        help="Username for Wiki")
+    parser.add_argument("--pass", dest="password", default=None,
+                        help="Password for Wiki")
+    parser.add_argument("-c", dest="category", action='store_true',
+                        help="Fetch entire category instead of single page")
+    parser.add_argument("--out", dest="output", default=None,
+                        help="Output directory (default is 'out' or name of category)")
+    parser.add_argument("target",
+                        help="Page name or category name to fetch")
     return parser
 
 if __name__ == '__main__':
