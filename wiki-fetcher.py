@@ -80,12 +80,14 @@ def ensure_dir(directory):
         os.makedirs(directory)
 
 
-def main(params):
-    site = setup_connection(params.host, params.user, params.password)
-    if params.category:
-        fetch_wiki_category(site, params.target, params.output)
+def download(host, target,
+             user=None, password=None,
+             output="out", category=None):
+    site = setup_connection(host, user, password)
+    if category:
+        fetch_wiki_category(site, target, output)
     else:
-        fetch_wiki_page(site, params.target, params.output)
+        fetch_wiki_page(site, target, output)
 
 
 def setup_cli_parser():
@@ -110,4 +112,4 @@ def setup_cli_parser():
 
 if __name__ == '__main__':
     parser = setup_cli_parser()
-    main(parser.parse_args())
+    download(**vars(parser.parse_args()))
