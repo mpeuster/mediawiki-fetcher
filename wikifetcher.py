@@ -29,6 +29,17 @@ def setup_connection(host, user=None, password=None):
     return site
 
 
+def no_archived_elements(img_list):
+    """
+    Removes old revisions from image list.
+    Old versions can be identified by having
+    'archive' as part of their url.
+    Not nice, but the mwclinet APi does not
+    provide a build-in solution for revision management.
+    """
+    return [i for i in img_list if 'archive' not in i.imageinfo['url']]
+
+
 def fetch_wiki_page(site, page, out=None):
     """
     Arguments:
@@ -50,7 +61,7 @@ def fetch_wiki_page(site, page, out=None):
     # fetch all images used in page
     # TODO: Filter? This will download all linked files (e.g. PDFs)
     print "Fetching page's images"
-    for img in page.images():
+    for img in no_archived_elements(page.images()):
         subprocess.call(
             ["wget", "-xNq",
              "-O%s%s" % (out, img.name.replace("File:", "")),
